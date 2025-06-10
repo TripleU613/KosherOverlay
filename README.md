@@ -1,4 +1,3 @@
-
 # KosherOverlay Service
 
 **KosherOverlay** is a lightweight Android foreground service that places a translucent "Kosher Certified" logo on top of all apps — great for system-level certification, branding, kiosk mode, or compliance.
@@ -7,11 +6,11 @@
 
 ## 🕊️ Features
 
-* Persistent **system overlay** with a translucent image
-* Runs as a **foreground service** with notification
-* Automatically **restarts** if killed
-* Touch-invisible and non-blocking
-* Positioned neatly in the bottom-right corner
+- Persistent **system overlay** with a translucent image
+- Runs as a **foreground service** with notification
+- Automatically **restarts** if killed
+- Touch-invisible and non-blocking
+- Positioned neatly in the bottom-right corner
 
 ---
 
@@ -26,30 +25,34 @@
 
 ## 🧩 Setup
 
-**Image Resource**
+**Image Resource**  
 Add your logo to `res/drawable` as `kosher_logo.png`.
 
-**Overlay Permission**
+**Overlay Permission**  
 Make sure your app requests `SYSTEM_ALERT_WINDOW` permission in the manifest and at runtime (Android 6+):
 
 ```xml
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
 ```
 
-**Foreground Notification Icon**
+**Foreground Notification Icon**  
 Replace `R.mipmap.ic_launcher` with your desired icon.
+
+**Privileged Permissions**  
+A provided permissions file must be pushed to `/system/etc/permissions.xml` to grant the necessary privileged permissions for the KosherOverlay service when installed as a system app. This step is required if you deploy the app in `/system/priv-app` and need privileged capabilities.
 
 ---
 
 ## 📐 Customization
 
-* Change position via `params.gravity = Gravity.BOTTOM or Gravity.END`
-* Adjust size with `imageSizeDp`
-* Modify transparency via `overlayImageView.alpha = 0.2f`
+- Change position via `params.gravity = Gravity.BOTTOM or Gravity.END`
+- Adjust size with `imageSizeDp`
+- Modify transparency via `overlayImageView.alpha = 0.2f`
 
 ---
 
 ## 🛠 Requirements
 
-* Android 8.0+ (for `TYPE_APPLICATION_OVERLAY`)
-* Overlay permission granted manually by the user
+- Android 8.0+ (for `TYPE_APPLICATION_OVERLAY`)
+- Overlay permission granted manually by the user
+- If installed as a system app, the permissions file must be present in `/system/etc/permissions.xml`
