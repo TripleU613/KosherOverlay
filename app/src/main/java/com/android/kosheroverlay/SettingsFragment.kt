@@ -34,7 +34,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 ContextCompat.startForegroundService(context, intent)
             } else {
                 // Show toast to inform user about reboot
-                Toast.makeText(context, "Your device will reboot in 5 seconds", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Reboot to apply changes", Toast.LENGTH_LONG).show()
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     try {
