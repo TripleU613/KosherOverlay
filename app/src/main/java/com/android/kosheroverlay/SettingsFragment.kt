@@ -2,7 +2,10 @@ package com.android.kosheroverlay
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.preference.PreferenceFragmentCompat
@@ -31,8 +34,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 ContextCompat.startForegroundService(context, intent)
             } else {
-                // Stop the overlay service immediately when toggled OFF
-                context.stopService(intent)
+                // Show toast to inform user about reboot
+                Toast.makeText(context, "Your device will reboot in 5 seconds", Toast.LENGTH_LONG).show()
+
+                // Schedule reboot after 5 seconds
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val rebootIntent = Intent(Intent.ACTION_REBOOT)
+                    rebootIntent.putExtra("nowait", 1)
+                    rebootIntent.putExtra("interval", 1)
+                    rebootIntent.putExtra("window", 0)
+                    context.sendBroadcast(rebootIntent)
+                }, 5000)
             }
             true
         }
