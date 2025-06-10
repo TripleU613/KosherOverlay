@@ -59,6 +59,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose")
+    implementation(libs.androidx.preference.ktx)
 
     // Optional: Compose tooling support
     debugImplementation("androidx.compose.ui:ui-tooling")

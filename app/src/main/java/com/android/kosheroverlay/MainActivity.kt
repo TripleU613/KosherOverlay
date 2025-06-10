@@ -1,13 +1,19 @@
+// MainActivity.kt
 package com.android.kosheroverlay
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startForegroundService(Intent(this, OverlayService::class.java)) // Changed to startForegroundService
-        finish()
+        setContentView(R.layout.activity_main)
+
+        val settingsButton = findViewById<Button>(R.id.settings_button)
+        settingsButton.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 }

@@ -1,0 +1,10 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="overlay_enabled"
+        android:title="Enable Overlay"
+        android:summary="Toggle the overlay service"
+        android:defaultValue="false"/>
+
+</PreferenceScreen>
