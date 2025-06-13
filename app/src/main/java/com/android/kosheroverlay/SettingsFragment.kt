@@ -67,5 +67,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             true
         }
+
+        // Handle FNG Launch Button
+        val launchFngPref = findPreference<Preference>("launch_fng")
+        launchFngPref?.setOnPreferenceClickListener {
+            val context = requireContext()
+            val intent = Intent(Intent.ACTION_MAIN).apply {
+                setClassName("com.fb.fluid", "com.fb.fluid.ui.ActivitySettings")
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            try {
+                startActivity(intent)
+                Toast.makeText(context, "Launching FNG", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to launch FNG: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+            true
+        }
+
     }
 }

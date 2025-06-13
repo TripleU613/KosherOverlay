@@ -11,4 +11,10 @@
         android:key="launch_bcr"
         android:title="Open BCR"
         android:summary="Launch the Basic Call Recorder app"/>
+
+    <Preference
+        android:key="launch_fng"
+        android:title="Open FNG"
+        android:summary="Launch the Fluid Navigation Gestures settings"/>
+
 </PreferenceScreen>
