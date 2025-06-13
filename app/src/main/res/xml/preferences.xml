@@ -7,4 +7,8 @@
         android:summary="Toggle the overlay service"
         android:defaultValue="false"/>
 
+    <Preference
+        android:key="launch_bcr"
+        android:title="Open BCR"
+        android:summary="Launch the Basic Call Recorder app"/>
 </PreferenceScreen>

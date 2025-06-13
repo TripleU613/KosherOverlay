@@ -4,18 +4,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
+        // Handle Overlay Switch
         val overlayPref = findPreference<SwitchPreferenceCompat>("overlay_enabled")
         overlayPref?.setOnPreferenceChangeListener { _, newValue ->
             val enabled = newValue as Boolean
@@ -44,6 +46,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         e.printStackTrace()
                     }
                 }, 5000)
+            }
+            true
+        }
+
+        // Handle BCR Launch Button
+        val launchBcrPref = findPreference<Preference>("launch_bcr")
+        launchBcrPref?.setOnPreferenceClickListener {
+            val context = requireContext()
+            val packageName = "com.chiller3.bcr"
+            val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+            if (intent != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(context, "BCR app is not installed", Toast.LENGTH_SHORT).show()
             }
             true
         }
