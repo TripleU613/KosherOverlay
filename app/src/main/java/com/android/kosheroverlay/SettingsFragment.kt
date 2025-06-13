@@ -54,12 +54,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val launchBcrPref = findPreference<Preference>("launch_bcr")
         launchBcrPref?.setOnPreferenceClickListener {
             val context = requireContext()
-            val packageName = "com.chiller3.bcr"
-            val intent = context.packageManager.getLaunchIntentForPackage(packageName)
-            if (intent != null) {
+            val intent = Intent(Intent.ACTION_MAIN).apply {
+                setClassName("com.chiller3.bcr", "com.chiller3.bcr.settings.SettingsActivity")
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Required for system apps or non-activity contexts
+            }
+            try {
                 startActivity(intent)
-            } else {
-                Toast.makeText(context, "BCR app is not installed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Launching BCR", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed to launch BCR: ${e.message}", Toast.LENGTH_LONG).show()
             }
             true
         }
