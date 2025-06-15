@@ -86,7 +86,7 @@ class OverlayService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return START_NOT_STICKY // Prevent automatic restart when killed
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
