@@ -15,4 +15,3 @@ val md3_on_surface = Color(0xFFE0E0E0)
 val md3_on_surface_variant = Color(0xFFB0B0B0)
 val md3_surface_container = Color(0xFF1E1E1E) // Card background
 val md3_background = Color(0xFF0D0D0D) // Deep dark background
-val md3_elevation_tint = Color(0x1AFFFFFF)

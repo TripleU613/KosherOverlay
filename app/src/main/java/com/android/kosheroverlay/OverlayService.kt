@@ -6,13 +6,12 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
-import android.os.Build
 import android.os.IBinder
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 
 class OverlayService : Service() {
@@ -27,15 +26,13 @@ class OverlayService : Service() {
 
         // Step 1: Start as a foreground service
         val channelId = "OverlayServiceChannel"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Overlay Service",
-                NotificationManager.IMPORTANCE_LOW // Low importance to minimize user disturbance
-            )
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            channelId,
+            "Overlay Service",
+            NotificationManager.IMPORTANCE_LOW // Low importance to minimize user disturbance
+        )
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
 
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Kosher Overlay Active")

@@ -1,14 +1,14 @@
+
 package com.android.kosheroverlay
 
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -27,10 +27,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val intent = Intent(context, OverlayService::class.java)
             if (enabled) {
                 // Only start service if overlay permission is granted
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
+                if (true && !Settings.canDrawOverlays(context)) {
                     val permIntent = Intent(
                         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + context.packageName)
+                        ("package:" + context.packageName).toUri()
                     )
                     startActivity(permIntent)
                     return@setOnPreferenceChangeListener false

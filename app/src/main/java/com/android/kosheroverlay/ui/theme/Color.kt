@@ -1,9 +1,6 @@
 package com.android.kosheroverlay.ui.theme
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     primary = md3_primary,
@@ -21,11 +18,3 @@ private val DarkColorScheme = darkColorScheme(
     background = md3_background
 )
 
-@Composable
-fun KosherOverlayTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = DarkColorScheme,
-        typography = Typography,
-        content = content
-    )
-}
