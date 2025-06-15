@@ -1,3 +1,4 @@
+
 package com.android.kosheroverlay
 
 import android.app.Notification
@@ -6,6 +7,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.os.Binder
 import android.os.IBinder
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -18,67 +20,73 @@ class OverlayService : Service() {
     private lateinit var windowManager: WindowManager
     private lateinit var overlayViewContainer: FrameLayout
     private lateinit var overlayImageView: ImageView
+    private val binder = OverlayBinder()
 
-    override fun onBind(intent: Intent?): IBinder? = null
+    inner class OverlayBinder : Binder() {
+        fun getService(): OverlayService = this@OverlayService
+    }
+
+    override fun onBind(intent: Intent?): IBinder = binder
 
     override fun onCreate() {
         super.onCreate()
 
-        // Step 1: Start as a foreground service
+        // Create notification channel
         val channelId = "OverlayServiceChannel"
         val channel = NotificationChannel(
             channelId,
             "Overlay Service",
-            NotificationManager.IMPORTANCE_LOW // Low importance to minimize user disturbance
+            NotificationManager.IMPORTANCE_LOW
         )
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
 
+        // Build notification
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Kosher Overlay Active")
             .setContentText("Logo overlay is running")
-            .setSmallIcon(R.mipmap.ic_launcher) // Use your app icon
+            .setSmallIcon(R.mipmap.ic_launcher)
             .build()
 
         startForeground(1, notification)
 
-        // Step 2: Existing overlay setup
+        // Set up overlay
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         val imageSizeDp = 64
-        val imageSizeBytes = convertDpToPixel(imageSizeDp)
+        val imageSizePixels = convertDpToPixel(imageSizeDp)
 
-        overlayImageView = ImageView(this)
-        overlayImageView.setImageResource(R.drawable.kosher_logo)
-        overlayImageView.alpha = 0.2f
-        overlayImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+        overlayImageView = ImageView(this).apply {
+            setImageResource(R.drawable.kosher_logo)
+            alpha = 0.2f
+            scaleType = ImageView.ScaleType.FIT_CENTER
+        }
 
         overlayViewContainer = FrameLayout(this)
-        val imageParams = FrameLayout.LayoutParams(imageSizeBytes, imageSizeBytes)
+        val imageParams = FrameLayout.LayoutParams(imageSizePixels, imageSizePixels)
         overlayViewContainer.addView(overlayImageView, imageParams)
 
         val params = WindowManager.LayoutParams(
-            imageSizeBytes,
-            imageSizeBytes,
+            imageSizePixels,
+            imageSizePixels,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSLUCENT
-        )
-
-        params.gravity = Gravity.BOTTOM or Gravity.END
-        val marginDp = 20
-        val marginPixels = convertDpToPixel(marginDp)
-        params.x = marginPixels
-        params.y = marginPixels
+        ).apply {
+            gravity = Gravity.BOTTOM or Gravity.END
+            val marginDp = 20
+            val marginPixels = convertDpToPixel(marginDp)
+            x = marginPixels
+            y = marginPixels
+        }
 
         windowManager.addView(overlayViewContainer, params)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Step 3: Return START_STICKY to restart if killed
-        return START_STICKY
+        return START_NOT_STICKY // Prevent automatic restart when killed
     }
 
     override fun onDestroy() {
@@ -86,9 +94,7 @@ class OverlayService : Service() {
         if (::overlayViewContainer.isInitialized && overlayViewContainer.isAttachedToWindow) {
             windowManager.removeView(overlayViewContainer)
         }
-        // Step 4: Restart the service if destroyed
-        val restartIntent = Intent(this, OverlayService::class.java)
-        startService(restartIntent)
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
     private fun convertDpToPixel(dp: Int): Int {

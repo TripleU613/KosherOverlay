@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -42,10 +43,9 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0") // Material 3
-    implementation("androidx.preference:preference-ktx:1.2.1") // PreferenceFragmentCompat
-    implementation("androidx.cardview:cardview:1.0.0") // Rounded cards
-    // Minimal Compose dependencies for Color.kt, Theme.kt, Type.kt
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.cardview:cardview:1.0.0")
     implementation(platform("androidx.compose:compose-bom:2024.10.00"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui")

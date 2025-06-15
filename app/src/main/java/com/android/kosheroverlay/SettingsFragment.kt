@@ -1,53 +1,56 @@
 
 package com.android.kosheroverlay
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.Settings
+import android.os.IBinder
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 
 class SettingsFragment : PreferenceFragmentCompat() {
+    private var overlayServiceBound = false
+    private var overlayService: OverlayService? = null
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            overlayService = (service as OverlayService.OverlayBinder).getService()
+            overlayServiceBound = true
+            updateOverlaySwitchState()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            overlayServiceBound = false
+            overlayService = null
+            updateOverlaySwitchState()
+        }
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-
+        // Bind to OverlayService to check its state
+        val context = requireContext()
+        val intent = Intent(context, OverlayService::class.java)
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
         // Handle Overlay Switch
         val overlayPref = findPreference<SwitchPreferenceCompat>("overlay_enabled")
         overlayPref?.setOnPreferenceChangeListener { _, newValue ->
             val enabled = newValue as Boolean
-            val context = requireContext()
-            val intent = Intent(context, OverlayService::class.java)
-            if (enabled) {
-                // Only start service if overlay permission is granted
-                if (true && !Settings.canDrawOverlays(context)) {
-                    val permIntent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        ("package:" + context.packageName).toUri()
-                    )
-                    startActivity(permIntent)
-                    return@setOnPreferenceChangeListener false
-                }
-                ContextCompat.startForegroundService(context, intent)
-            } else {
-                // Show toast to inform user about reboot
-                Toast.makeText(context, "Reboot to apply changes", Toast.LENGTH_LONG).show()
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            prefs.edit().putBoolean("overlay_enabled", enabled).apply()
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    try {
-                        val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "reboot"))
-                        process.waitFor()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }, 5000)
+            if (enabled) {
+                startOverlayService()
+            } else {
+                stopOverlayService()
             }
             true
         }
@@ -55,11 +58,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Handle BCR Launch Button
         val launchBcrPref = findPreference<Preference>("launch_bcr")
         launchBcrPref?.setOnPreferenceClickListener {
-            val context = requireContext()
             val intent = Intent(Intent.ACTION_MAIN).apply {
                 setClassName("com.chiller3.bcr", "com.chiller3.bcr.settings.SettingsActivity")
                 addCategory(Intent.CATEGORY_LAUNCHER)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Required for system apps or non-activity contexts
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             try {
                 startActivity(intent)
@@ -73,7 +75,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         // Handle FNG Launch Button
         val launchFngPref = findPreference<Preference>("launch_fng")
         launchFngPref?.setOnPreferenceClickListener {
-            val context = requireContext()
             val intent = Intent(Intent.ACTION_MAIN).apply {
                 setClassName("com.fb.fluid", "com.fb.fluid.ui.ActivitySettings")
                 addCategory(Intent.CATEGORY_LAUNCHER)
@@ -87,6 +88,38 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             true
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        updateOverlaySwitchState()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (overlayServiceBound) {
+            requireContext().unbindService(serviceConnection)
+            overlayServiceBound = false
+        }
+    }
+
+    private fun startOverlayService() {
+        val context = requireContext()
+        val intent = Intent(context, OverlayService::class.java)
+        ContextCompat.startForegroundService(context, intent)
+        Toast.makeText(context, "Overlay service started", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun stopOverlayService() {
+        val context = requireContext()
+        val intent = Intent(context, OverlayService::class.java)
+        context.stopService(intent)
+        Toast.makeText(context, "Overlay service stopped", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateOverlaySwitchState() {
+        val overlayPref = findPreference<SwitchPreferenceCompat>("overlay_enabled")
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        overlayPref?.isChecked = prefs.getBoolean("overlay_enabled", false)
     }
 }
