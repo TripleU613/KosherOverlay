@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="md3_primary">#FFBB86FC</color>
+    <color name="md3_on_primary">#FF000000</color>
+    <color name="md3_primary_container">#FF6200EE</color>
+    <color name="md3_on_primary_container">#FFE1BEE7</color>
+    <color name="md3_secondary">#FF03DAC5</color>
+    <color name="md3_on_secondary">#FF000000</color>
+    <color name="md3_secondary_container">#FF018786</color>
+    <color name="md3_on_secondary_container">#FFB2DFDB</color>
+    <color name="md3_surface">#FF121212</color>
+    <color name="md3_on_surface">#FFE0E0E0</color>
+    <color name="md3_on_surface_variant">#FFB0B0B0</color>
+    <color name="md3_surface_container">#FF1E1E1E</color>
+    <color name="md3_background">#FF0D0D0D</color>
+    <color name="md3_elevation_tint">#1AFFFFFF</color>
 </resources>

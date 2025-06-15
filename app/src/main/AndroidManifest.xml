@@ -13,10 +13,11 @@
         android:icon="@drawable/uguqbbzyyhlcgqyhkdbm"
         android:roundIcon="@drawable/uguqbbzyyhlcgqyhkdbm"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight">
+        android:theme="@style/Theme.KosherOverlay">
 
         <!-- Main Activity -->
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,15 +26,17 @@
         </activity>
 
         <!-- Settings Activity -->
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
 
-
+        <!-- Overlay Service -->
         <service
             android:name=".OverlayService"
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />
 
-        <!-- Boot Receiver (Android 12+ requires exported="true" for system broadcasts) -->
+        <!-- Boot Receiver -->
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
@@ -44,4 +47,5 @@
         </receiver>
 
     </application>
+
 </manifest>

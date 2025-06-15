@@ -1,20 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
-        android:key="overlay_enabled"
-        android:title="Enable Overlay"
-        android:summary="Toggle the overlay service"
-        android:defaultValue="false"/>
+    <PreferenceCategory
+        app:title="Overlay Settings"
+        app:iconSpaceReserved="false"
+        android:layout="@layout/preference_category_layout">
 
-    <Preference
-        android:key="launch_bcr"
-        android:title="Open BCR"
-        android:summary="Launch the Basic Call Recorder app"/>
+        <SwitchPreferenceCompat
+            android:key="overlay_enabled"
+            android:title="Enable Overlay"
+            android:summary="Toggle the overlay service"
+            android:defaultValue="false"
+            app:iconSpaceReserved="false"
+            android:layout="@layout/preference_layout"
+            app:switchTextOn="On"
+            app:switchTextOff="Off"
+            app:selectable="true"/>
 
-    <Preference
-        android:key="launch_fng"
-        android:title="Open FNG"
-        android:summary="Launch the Fluid Navigation Gestures settings"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="App Integrations"
+        app:iconSpaceReserved="false"
+        android:layout="@layout/preference_category_layout">
+
+        <Preference
+            android:key="launch_bcr"
+            android:title="Open BCR"
+            android:summary="Launch the Basic Call Recorder app"
+            app:iconSpaceReserved="false"
+            android:layout="@layout/preference_layout"
+            app:selectable="true"/>
+
+        <Preference
+            android:key="launch_fng"
+            android:title="Open FNG"
+            android:summary="Launch the Fluid Navigation Gestures settings"
+            app:iconSpaceReserved="false"
+            android:layout="@layout/preference_layout"
+            app:selectable="true"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.KosherOverlaytheme" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.KosherOverlay" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/md3_primary</item>
+        <item name="colorOnPrimary">@color/md3_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md3_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md3_on_primary_container</item>
+        <item name="colorSecondary">@color/md3_secondary</item>
+        <item name="colorOnSecondary">@color/md3_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md3_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md3_on_secondary_container</item>
+        <item name="colorSurface">@color/md3_surface</item>
+        <item name="colorOnSurface">@color/md3_on_surface</item>
+        <item name="colorSurfaceContainer">@color/md3_surface_container</item>
+        <item name="android:windowBackground">@color/md3_background</item>
+        <item name="elevationOverlayColor">@color/md3_elevation_tint</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:textColorPrimary">@color/md3_on_surface</item>
+        <item name="android:textColorSecondary">@color/md3_on_surface_variant</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Kosher</item>
+    </style>
+
+    <style name="PreferenceThemeOverlay.Kosher" parent="PreferenceThemeOverlay">
+        <item name="preferenceCategoryStyle">@style/Preference.Category.Kosher</item>
+        <item name="switchPreferenceCompatStyle">@style/SwitchPreferenceCompat.Kosher</item>
+        <item name="preferenceStyle">@style/Preference.Kosher</item>
+    </style>
+
+    <style name="Preference.Category.Kosher" parent="Preference.Category.Material">
+        <item name="android:layout">@layout/preference_category_layout</item>
+        <item name="android:textColor">@color/md3_on_surface</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    </style>
+
+    <style name="SwitchPreferenceCompat.Kosher" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+        <item name="android:widgetLayout">@layout/switch_widget_layout</item>
+        <item name="switchTextOn">On</item>
+        <item name="switchTextOff">Off</item>
+    </style>
+
+    <style name="Preference.Kosher" parent="Preference.Material">
+        <item name="android:layout">@layout/preference_layout</item>
+    </style>
 </resources>

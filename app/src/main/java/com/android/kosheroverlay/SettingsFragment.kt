@@ -17,6 +17,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
+
+
         // Handle Overlay Switch
         val overlayPref = findPreference<SwitchPreferenceCompat>("overlay_enabled")
         overlayPref?.setOnPreferenceChangeListener { _, newValue ->
