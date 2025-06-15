@@ -1,6 +1,7 @@
 
 package com.android.kosheroverlay
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -28,6 +29,7 @@ class OverlayService : Service() {
 
     override fun onBind(intent: Intent?): IBinder = binder
 
+    @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
 
